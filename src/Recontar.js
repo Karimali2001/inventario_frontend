@@ -60,7 +60,6 @@ function Recontar() {
             axios.put(process.env.REACT_APP_SERVER_URL + `/productos/${id}`, { countedvalue })
                 .then(response => {
                     console.log(response);
-                    window.location.reload();
                 })
                 .catch(error => {
                     console.error('There was an error!', error);
