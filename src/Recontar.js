@@ -89,6 +89,7 @@ function Recontar() {
                                     <TextField
                                         type="number"
                                         value={row.countedvalue}
+                                        sx={{ minWidth: 60 }} 
                                         inputProps={{ min: -1, inputMode: 'numeric' }}
                                         onChange={(event) => {
                                             const newValue = parseInt(event.target.value);
