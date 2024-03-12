@@ -27,12 +27,6 @@ export default function App() {
 
   const navigate = useNavigate();
 
-  // const [rows, setRows] = React.useState([
-  //   createData('Medicamentos', '2022-01-01'),
-  //   createData('Miscelaneos', '2022-01-02'),
-  //   createData('Vitrina', '2022-01-03'),
-  //   // Add more rows as needed
-  // ]);
   const [rows, setRows] = React.useState([]);
 
 
@@ -49,13 +43,7 @@ export default function App() {
     setOpen(false);
   };
 
-  // const handleAddRow = () => {
-  //   // Add a new row with the entered title and today's date
-  //   const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
-  //   setRows([...rows, createData(title, today)]);
-  //   setTitle(''); // Clear the title
-  //   handleClose(); // Close the dialog
-  // };
+  
 
   const handleAddRow = () => {
     const today = new Date(); // Get today's date as a Date object

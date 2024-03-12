@@ -3,15 +3,19 @@ import axios from 'axios';
 
 import { useLocation } from 'react-router-dom';
 import MUIDataTable from "mui-datatables";
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 
 function Faltantes() {
     let { state } = useLocation();
     let id = state?.id;
     const [data, setData] = useState([]);
+    const [selectedOption, setSelectedOption] = useState('faltantes');
 
-    console.log(data);
-
+    const handleChange = (event) => {
+        setSelectedOption(event.target.value);
+    };
 
     useEffect(() => {
         axios.get(process.env.REACT_APP_SERVER_URL + `/resultados/${id}`)
@@ -26,7 +30,7 @@ function Faltantes() {
     const formatedData = data
         .filter(item => item.countedvalue !== -1)
         .filter(item => item.systemvalue !== item.countedvalue)
-        .filter(item => (item.countedvalue - item.systemvalue) < 0)
+        .filter(item => selectedOption === 'faltantes' ? (item.countedvalue - item.systemvalue) < 0 : (item.countedvalue - item.systemvalue) > 0)
         .map(item => [item.barcode, item.description, item.cost, item.systemvalue, item.countedvalue, item.countedvalue - item.systemvalue]);
 
     const columns = ["Código de Barra", "Descripción", "Costo", "Sistema", "Físico", "Diferencia"];
@@ -50,8 +54,12 @@ function Faltantes() {
 
     return (
         <>
+
             <MUIDataTable
-                title={"Faltantes"}
+                title={<Select value={selectedOption} onChange={handleChange}>
+                    <MenuItem value={'faltantes'}>Faltantes</MenuItem>
+                    <MenuItem value={'sobrante'}>Sobrante</MenuItem>
+                </Select>}
                 data={formatedData}
                 columns={columns}
                 options={options}

@@ -13,12 +13,19 @@ import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import { io } from "socket.io-client";
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 const socket = io(process.env.REACT_APP_SERVER_URL); // replace with your server URL
 
 function Recontar() {
     let { state } = useLocation();
     let id = state?.id;
+
+    const [selectedOption, setSelectedOption] = useState('less');
+    const [lessProducts, setLessProducts] = useState([]);
+    const [moreProducts, setMoreProducts] = useState([]);
+    const [data, setData] = useState([]);
 
     useEffect(() => {
 
@@ -35,22 +42,35 @@ function Recontar() {
 
     }, []);
 
-    const [data, setData] = useState([]);
+
 
     useEffect(() => {
         axios.get(process.env.REACT_APP_SERVER_URL + `/recontar/${id}`)
             .then(response => {
-                console.log(response.data)
-                setData(response.data);
+                setLessProducts(response.data.less);
+                setMoreProducts(response.data.more);
+                setSelectedOption('less'); // Set initial option
             })
             .catch(error => {
                 console.error('There was an error!', error);
             });
     }, []);
 
+    const handleChange = (event) => {
+        setSelectedOption(event.target.value);
+    };
+
+    useEffect(() => {
+        // Update productsToShow when selectedOption changes
+        if (selectedOption === 'less') {
+          setData(lessProducts);
+        } else {
+          setData(moreProducts);
+        }
+      }, [selectedOption, lessProducts, moreProducts]);
+
+      console.log(data);
     
-
-
     function update() {
         const updateData = data
             .filter(({ countedvalue }) => countedvalue !== -1)
@@ -70,6 +90,10 @@ function Recontar() {
     }
     return (
         <>
+            <Select value={selectedOption} onChange={handleChange}>
+                <MenuItem value={'less'}>Faltantes</MenuItem>
+                <MenuItem value={'more'}>Sobrantes</MenuItem>
+            </Select>
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead sx={{ bgcolor: '#1976d2' }}>
@@ -88,7 +112,7 @@ function Recontar() {
                                     <TextField
                                         type="number"
                                         value={row.countedvalue}
-                                        sx={{ minWidth: 60 }} 
+                                        sx={{ minWidth: 60 }}
                                         inputProps={{ min: -1, inputMode: 'numeric' }}
                                         onChange={(event) => {
                                             const newValue = parseInt(event.target.value);

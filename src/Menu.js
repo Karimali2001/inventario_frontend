@@ -105,40 +105,40 @@ function HomePage() {
   };
 
   return (
-    <Box sx={{m:2}}
-      >
+    <Box sx={{ m: 2 }}
+    >
       <Grid container spacing={4}>
-      <Grid item xs={12} sm={4}>
-        <Button sx={{height:120}} onClick={handleContarClick} variant="contained" fullWidth>
-          Contar
-        </Button>
+        <Grid item xs={12} sm={4}>
+          <Button sx={{ height: 120 }} onClick={handleContarClick} variant="contained" fullWidth>
+            Contar
+          </Button>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Button sx={{ height: 120 }} variant="contained" fullWidth onClick={handleRecontarClick}>
+            Recontar 
+          </Button>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Button sx={{ height: 120 }} variant="contained" fullWidth onClick={() => handleButtonClick("ingresar")}>
+            Ingresar cantidades
+          </Button>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Button sx={{ height: 120 }} variant="contained" fullWidth onClick={() => handleButtonClick("actualizar")}>
+            Actualizar cantidades
+          </Button>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Button sx={{ height: 120 }} variant="contained" fullWidth onClick={handleResultadosClick}>
+            Resultados
+          </Button>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Button sx={{ height: 120 }} variant="contained" fullWidth onClick={handleFaltantesClick}>
+            Faltantes / Sobrantes
+          </Button>
+        </Grid>
       </Grid>
-      <Grid item xs={12} sm={4}>
-        <Button sx={{height:120}} variant="contained" fullWidth onClick={handleRecontarClick}>
-          Recontar
-        </Button>
-      </Grid>
-      <Grid item xs={12} sm={4}>
-        <Button sx={{height:120}} variant="contained" fullWidth onClick={() => handleButtonClick("ingresar")}>
-          Ingresar cantidades
-        </Button>
-      </Grid>
-      <Grid item xs={12} sm={4}>
-        <Button sx={{height:120}} variant="contained" fullWidth onClick={() => handleButtonClick("actualizar")}>
-          Actualizar cantidades
-        </Button>
-      </Grid>
-      <Grid item xs={12} sm={4}>
-        <Button sx={{height:120}} variant="contained" fullWidth onClick={handleResultadosClick}>
-          Resultados
-        </Button>
-      </Grid>
-      <Grid item xs={12} sm={4}>
-        <Button sx={{height:120}} variant="contained" fullWidth onClick={handleFaltantesClick}>
-          Faltantes
-        </Button>
-      </Grid>
-    </Grid>
       <input type="file" ref={inputFile} style={{ display: 'none' }} accept=".xlsx,.xls" onChange={handleFileUpload} />
     </Box>
   );
