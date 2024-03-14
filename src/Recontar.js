@@ -69,7 +69,6 @@ function Recontar() {
         }
       }, [selectedOption, lessProducts, moreProducts]);
 
-      console.log(data);
     
     function update() {
         const updateData = data

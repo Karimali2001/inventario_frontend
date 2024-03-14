@@ -81,17 +81,43 @@ function HomePage() {
             .catch(error => {
               console.error(error);
             });
-        } else if (bandera === "actualizar") {
-          inventario.forEach(item => {
-            const { barCode, systemValue } = item;
-            axios.put(process.env.REACT_APP_SERVER_URL + `/cantsistema/${barCode}`, { systemValue })
-              .then(response => {
-                console.log(response);
-              })
-              .catch(error => {
-                console.error('There was an error!', error);
+          }else if (bandera === "actualizar") {
+          // First, get the current inventory
+          axios.get(process.env.REACT_APP_SERVER_URL + `/resultados/${id}`)
+            .then(response => {
+              const currentInventory = response.data;
+
+              currentInventory.forEach(inventoryItem => {
+                const { barcode, systemvalue } = inventoryItem; // Use lowercase property names
+
+                // Check if the item is in the new inventory
+                const itemInNewInventory = inventario.some(item => item.barCode === barcode);
+
+                if (itemInNewInventory) {
+                  // If the item is in the new inventory, update it
+                  const newSystemValue = inventario.find(item => item.barCode === barcode).systemValue;
+                  axios.put(process.env.REACT_APP_SERVER_URL + `/cantsistema/${barcode}`, { systemValue: newSystemValue })
+                    .then(response => {
+                      console.log(response);
+                    })
+                    .catch(error => {
+                      console.error('There was an error!', error);
+                    });
+                } else {
+                  // If the item is not in the new inventory, set its systemValue to 0
+                  axios.put(process.env.REACT_APP_SERVER_URL + `/cantsistema/${barcode}`, { systemValue: 0 })
+                    .then(response => {
+                      console.log(response);
+                    })
+                    .catch(error => {
+                      console.error('There was an error!', error);
+                    });
+                }
               });
-          });
+            })
+            .catch(error => {
+              console.error('There was an error!', error);
+            });
         }
 
 
