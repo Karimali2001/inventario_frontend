@@ -90,7 +90,7 @@ function Contar() {
                                     <TextField
                                         type="number"
                                         value={row.countedvalue}
-                                        sx={{ minWidth: 60 }} 
+                                        sx={{ minWidth: 60 }}
                                         inputProps={{ min: -1, inputMode: 'numeric' }}
                                         onChange={(event) => {
                                             const newValue = parseInt(event.target.value);
@@ -98,6 +98,15 @@ function Contar() {
 
                                             // Emit an event to the server with the updated countedValue
                                             socket.emit('countedValueChange', { id: row.id, countedvalue: newValue });
+
+                                            // Update the data on the server
+                                            axios.put(process.env.REACT_APP_SERVER_URL + `/productos/${row.id}`, { countedvalue: newValue })
+                                                .then(response => {
+                                                    console.log(response);
+                                                })
+                                                .catch(error => {
+                                                    console.error('There was an error!', error);
+                                                });
                                         }}
                                     />
                                 </TableCell>

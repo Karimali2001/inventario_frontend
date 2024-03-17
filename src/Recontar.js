@@ -63,13 +63,13 @@ function Recontar() {
     useEffect(() => {
         // Update productsToShow when selectedOption changes
         if (selectedOption === 'less') {
-          setData(lessProducts);
+            setData(lessProducts);
         } else {
-          setData(moreProducts);
+            setData(moreProducts);
         }
-      }, [selectedOption, lessProducts, moreProducts]);
+    }, [selectedOption, lessProducts, moreProducts]);
 
-    
+
     function update() {
         const updateData = data
             .filter(({ countedvalue }) => countedvalue !== -1)
@@ -119,6 +119,16 @@ function Recontar() {
 
                                             // Emit an event to the server with the updated countedValue
                                             socket.emit('countedValueChange', { id: row.id, countedvalue: newValue });
+
+                                            // Update the data on the server
+                                            axios.put(process.env.REACT_APP_SERVER_URL + `/productos/${row.id}`, { countedvalue: newValue })
+                                                .then(response => {
+                                                    console.log(response);
+                                                })
+                                                .catch(error => {
+                                                    console.error('There was an error!', error);
+                                                });
+
                                         }}
                                     />
                                 </TableCell>
